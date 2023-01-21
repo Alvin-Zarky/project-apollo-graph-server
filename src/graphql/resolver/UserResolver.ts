@@ -60,12 +60,12 @@ export default {
         throw new ApolloError("Password should be atleast 6 characters")
       }
 
-      const nameExist= await User.findOne({ where: { name: { [Op.iLike]: `%${name.toLowerCase()}%` } } })
+      const nameExist= await User.findOne({ where: { name: { [Op.like]: `%${name.toLowerCase()}%` } } })
       if(nameExist){
         throw new ApolloError("Name was already exist...!")
       }
 
-      const emailExist= await User.findOne({ where: { email: { [Op.iLike]: `%${email.toLowerCase()}%` } } })
+      const emailExist= await User.findOne({ where: { email: { [Op.like]: `%${email.toLowerCase()}%` } } })
       if(emailExist){
         throw new ApolloError("Email was already exist...!")
       }
@@ -108,7 +108,7 @@ export default {
         throw new ApolloError("Please input the password")
       }
 
-      const user= await User.findOne({ where: { email: { [Op.iLike]: `%${email.toLowerCase()}%` } } }) as UserSchema
+      const user= await User.findOne({ where: { email: { [Op.like]: `%${email.toLowerCase()}%` } } }) as UserSchema
       if(!user){
         throw new ApolloError("Email incorrect...!")
       }

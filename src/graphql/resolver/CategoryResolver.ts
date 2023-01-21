@@ -53,8 +53,8 @@ export default {
       let count = Category.count({ where: { userId: user.id } })
       
       if(text){
-        categories= Category.findAll({ offset: start, limit: +reqLimit, where: { title: { [Op.iLike]: `%${text.toLowerCase()}%` }, userId: user.id }, order: [['createdAt', 'desc']] })
-        count= Category.count({ where: { title: { [Op.iLike]: `%${text.toLowerCase()}%` }, userId: user.id }  })
+        categories= Category.findAll({ offset: start, limit: +reqLimit, where: { title: { [Op.like]: `%${text.toLowerCase()}%` }, userId: user.id }, order: [['createdAt', 'desc']] })
+        count= Category.count({ where: { title: { [Op.like]: `%${text.toLowerCase()}%` }, userId: user.id }  })
       }
       
       const data= await categories
@@ -187,7 +187,7 @@ export default {
         throw new ApolloError("Please input the text")
       }
       
-      const category= await Category.findAll({ offset:page, limit, where: { title: { [Op.iLike]: `%${text.toLowerCase()}%` }, userId: user.id } })
+      const category= await Category.findAll({ offset:page, limit, where: { title: { [Op.like]: `%${text.toLowerCase()}%` }, userId: user.id } })
       return category
 
     }
