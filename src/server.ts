@@ -26,6 +26,7 @@ const typeBaseDefs= gql`
   type Query
 `
 const server = new ApolloServer({
+  cors: true,
   typeDefs: [typeBaseDefs, user, category, content],
   resolvers: _.merge({}, UserResolver, CategoryResolver, ContentResolver),
   introspection: process.env.APPLICATION_ENV !== 'production',
