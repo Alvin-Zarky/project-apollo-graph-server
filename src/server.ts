@@ -14,6 +14,10 @@ import CategoryResolver from "./graphql/resolver/CategoryResolver";
 import category from "./graphql/schema/category";
 import content from "./graphql/schema/content";
 import ContentResolver from "./graphql/resolver/ContentResolver";
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} from 'apollo-server-core'
 
 dotenv.config()
 const PORT = process.env.PORT || 8000
@@ -24,6 +28,13 @@ const typeBaseDefs= gql`
 const server = new ApolloServer({
   typeDefs: [typeBaseDefs, user, category, content],
   resolvers: _.merge({}, UserResolver, CategoryResolver, ContentResolver),
+  introspection: process.env.APPLICATION_ENV !== 'production',
+  plugins: [
+    // Install a landing page plugin based on NODE_ENV
+    process.env.NODE_ENV === 'production'
+      ? ApolloServerPluginLandingPageGraphQLPlayground()
+      : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
+  ],
   context: async ({req}): Promise<Context> =>{
     const user= await authTokenMiddleware(req.headers.authorization!)
     return {
